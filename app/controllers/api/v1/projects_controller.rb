@@ -2,7 +2,8 @@ module Api
 	module V1
 		class ProjectsController < ApplicationController
 			def index 
-				render json: Project.all
+				@projects = Project.all
+				render json: @projects
 			end
 
 			def create
