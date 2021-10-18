@@ -9,9 +9,7 @@ json.array! @projects do |project|
 	json.end_date = project.end_date.to_time.to_i
 
 	json.milestones project.milestones do |milestone|
-		json.title milestone.title
-		json.done milestone.done
-		json.created_at milestone.reated_at.to_time.to_i
+		json.partial! 'milestone/milestone', milestone: milestone
 	end
 
 	owner = User.find(project.created_by)
