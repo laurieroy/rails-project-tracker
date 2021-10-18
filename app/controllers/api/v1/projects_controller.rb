@@ -1,31 +1,39 @@
 module Api
 	module V1
 		class ProjectsController < ApplicationController
+			# skip_before_action :verify_authenticity_token, only: :create
+			# I'm following a tutorial that is incomplete, creating user JWT on separate branch so commenting out code
 			def index 
 				@projects = Project.all
-				render json: @projects
-			end
-
-			def create
-				project = Project.new(project_params)
-
-				if project.save
-					render json: project, status: :created
-				else
-					render json: project.errors, status: :unprocessable_entity
+				# @projects = current_user.projects #remove proj.all line when put back
+				respond_to do |format|
+					format.html
+					format.json { render json: @projects} # removed  .to_json(include: :milestones) since model now handles this
 				end
 			end
 
-			def destroy 
-				Project.find(params[:id]).destroy!
+			def create
+				# project = Project.new(project_params) # remove line when merge in user
+				@project = current_user.projects.create(project_params)
+				json_response(@project, :created)
 
-				head :no_content
+				# if project.save
+				# 	render json: project, status: :created
+				# else
+				# 	render json: project.errors, status: :unprocessable_entity
+				# end
 			end
 
-			private
+			# def destroy 
+			# 	Project.find(params[:id]).destroy!
 
+			# 	head :no_content
+			# end
+
+			private
+			# removed , :created_by from list of permitted params
 			def project_params
-				params.require(:project).permit(:title, :created_by)
+				params.require(:project).permit(:title)
 			end
 		end
 	end
