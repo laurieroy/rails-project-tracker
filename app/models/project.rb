@@ -9,3 +9,4 @@ class Project < ApplicationRecord
 		Time.at(self.start_date).to_date === Time.at(self.end_date).to_date
 	end
 end
+

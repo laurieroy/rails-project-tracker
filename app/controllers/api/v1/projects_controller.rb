@@ -14,6 +14,7 @@ module Api
 			def create
 				project = Project.new(project_params)
 				# @project = current_user.project.create!(project_params)
+
 				json_response(@project, :created)
 
 				# if project.save
@@ -30,9 +31,11 @@ module Api
 			# end
 
 			private
+
 			# remove created by from list of params, add start and end dates
 			def project_params
 				params.require(:project).permit(:title, :start_date, :end_date)
+
 			end
 		end
 	end
